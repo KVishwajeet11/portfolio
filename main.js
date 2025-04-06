@@ -2,17 +2,13 @@
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
     });
 });
 
-// Add active class to navigation links on scroll
+// Add active class to navigation links based on scroll position
 window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -34,30 +30,25 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Add scroll animation for elements
-const observerOptions = {
-    threshold: 0.2
-};
-
+// Add scroll-based animations
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('animate');
+            entry.target.classList.add('show');
         }
     });
-}, observerOptions);
-
-// Observe all sections
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
+}, {
+    threshold: 0.1
 });
 
-// Observe all skill cards
-document.querySelectorAll('.skill-card').forEach(card => {
+// Observe all skill cards and project cards for animation
+document.querySelectorAll('.skill-card, .project-card').forEach(card => {
     observer.observe(card);
+    card.classList.add('animate');
 });
 
-// Observe all project cards
-document.querySelectorAll('.project-card').forEach(card => {
-    observer.observe(card);
+// Add animation class to tech stack tags
+document.querySelectorAll('.tech-tag').forEach((tag, index) => {
+    tag.style.animationDelay = `${index * 0.1}s`;
+    tag.classList.add('animate');
 });
